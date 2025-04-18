@@ -105,7 +105,7 @@ int main(int argc, char* argv[]) {
     if (!id) {
         printf("There are %lld primes <= %lld\n", global_count, n);
         printf("SIEVE (no evens, no Bcast, %d processes) %10.6f seconds\n", p, elapsed_time);
-        printf("the process id",id);
+        printf("the process id: %d ",id);
     }
     fflush(stdout);
     MPI_Finalize();
