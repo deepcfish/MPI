@@ -86,7 +86,7 @@ int main(int argc, char* argv[])
                 if (first % 2 == 0) first += prime;  // skip even
             }
         }
-        for (i = first; i <=high_value; i += prime){
+        for (i = first; i <=high_value; i += 2*prime){
             if(i%2==1) marked[(i-low_value)/2] = 1;
         }
         if (!id) {
