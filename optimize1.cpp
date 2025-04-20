@@ -90,11 +90,8 @@ int main(int argc, char* argv[])
             if(i%2==1) marked[(i-low_value)/2] = 1;
         }
         if (!id) {
-            while (++index < size && marked[index]);
-            if (index < size)
-                prime = index * 2 + 3;
-            else
-                prime = n + 1; 
+            while (marked[++index]);
+            prime = index*2+3;
         }
         if (p > 1) MPI_Bcast(&prime, 1, MPI_INT, 0, MPI_COMM_WORLD);
     } while (prime * prime <= n);
