@@ -1,3 +1,4 @@
+C
 #include "mpi.h"
 #include <math.h>
 #include <stdio.h>
@@ -26,6 +27,7 @@ int main(int argc, char* argv[])
     MPI_Init(&argc, &argv);
 
     /* Start the timer */
+
     MPI_Comm_rank(MPI_COMM_WORLD, &id);
     MPI_Comm_size(MPI_COMM_WORLD, &p);
     MPI_Barrier(MPI_COMM_WORLD);
