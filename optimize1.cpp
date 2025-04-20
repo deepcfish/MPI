@@ -77,7 +77,7 @@ int main(int argc, char* argv[])
     prime = 3;
     do {
         if (prime * prime > low_value)
-            first = prime * prime - low_value;
+            first = prime * prime;
         else {
             LL rem = low_value % prime;
             if (rem == 0) first = 0;
