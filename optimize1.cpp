@@ -46,7 +46,7 @@ int main(int argc, char* argv[])
 
     low_value = 2 + id * (n - 1) / p;
     high_value = 1 + (id + 1) * (n - 1) / p;
-    size = high_value - low_value + 1;
+    size = (high_value+1)/2-low_value/2;
 
     /* Bail out if all the primes used for sieving are
        not all held by process 0 */
@@ -69,14 +69,7 @@ int main(int argc, char* argv[])
         exit(1);
     }
 
-    //for (i = 0; i < size; i++) marked[i] = 0;
-    if(low_value%2==0){
-        for(i=1;i<size;i+=2)marked[i]=0;
-        for(i=0;i<size;i+=2)marked[i]=1;
-    }else{
-        for(i=1;i<size;i+=2)marked[i]=1;
-        for(i=0;i<size;i+=2)marked[i]=0;
-    }
+    for (i = 0; i < size; i++) marked[i] = 0;
     if (!id) index = 0;
     prime = 3;
     do {
@@ -86,10 +79,12 @@ int main(int argc, char* argv[])
             if (!(low_value % prime)) first = 0;
             else first = prime - (low_value % prime);
         }
-        for (i = first; i < size; i += prime) marked[i] = 1;
+        for (i = first; i < size; i += prime){
+            if(i%2) marked[(i-low_value+1)/2] = 1;
+        }
         if (!id) {
             while (marked[++index]);
-            prime = index + 2;
+            prime = index*2+3;
         }
         if (p > 1) MPI_Bcast(&prime, 1, MPI_INT, 0, MPI_COMM_WORLD);
     } while (prime * prime <= n);
@@ -108,7 +103,7 @@ int main(int argc, char* argv[])
 
     if (!id) {
         printf("There are %lld primes less than or equal to %lld\n",
-            global_count, n);
+            global_count+1, n);
         printf("SIEVE (%d) %10.6f\n", p, elapsed_time);
     }
     MPI_Finalize();
