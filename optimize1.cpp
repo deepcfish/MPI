@@ -80,7 +80,7 @@ int main(int argc, char* argv[])
             first = prime * prime;
         else {
             LL rem = low_value % prime;
-            if (rem == 0) first = 0;
+            if (rem == 0) first = low_value;
             else {
                 first = low_value + (prime - rem);
                 if (first % 2 == 0) first += prime;  // skip even
