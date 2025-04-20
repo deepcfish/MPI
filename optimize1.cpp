@@ -86,12 +86,15 @@ int main(int argc, char* argv[])
                 if (first % 2 == 0) first += prime;  // skip even
             }
         }
-        for (i = first; i < high_value; i += prime){
+        for (i = first; i <=high_value; i += prime){
             if(i%2==1) marked[(i-low_value)/2] = 1;
         }
         if (!id) {
-            while (marked[++index]);
-            prime = index*2+3;
+            while (++index < size && marked[index]);
+            if (index < size)
+                prime = index * 2 + 3;
+            else
+                prime = n + 1; 
         }
         if (p > 1) MPI_Bcast(&prime, 1, MPI_INT, 0, MPI_COMM_WORLD);
     } while (prime * prime <= n);
