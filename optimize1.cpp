@@ -87,7 +87,7 @@ int main(int argc, char* argv[])
             }
         }
         for (i = first; i <=high_value; i += 2*prime){
-            if(i%2==1) marked[(i-low_value)/2] = 1;
+                marked[(i-low_value)/2] = 1;
         }
         if (!id) {
             while (marked[++index]);
