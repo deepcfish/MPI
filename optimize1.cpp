@@ -46,7 +46,10 @@ int main(int argc, char* argv[])
 
     low_value = 2 + id * (n - 1) / p;
     high_value = 1 + (id + 1) * (n - 1) / p;
-    size = (high_value+1)/2-low_value/2;
+    if (low_value % 2 == 0) low_value++;
+    if (high_value % 2 == 0) high_value--;
+    
+    size = (high_value - low_value) / 2 + 1;
 
     /* Bail out if all the primes used for sieving are
        not all held by process 0 */
@@ -76,11 +79,15 @@ int main(int argc, char* argv[])
         if (prime * prime > low_value)
             first = prime * prime - low_value;
         else {
-            if (!(low_value % prime)) first = 0;
-            else first = prime - (low_value % prime);
+            LL rem = low_value % prime;
+            if (rem == 0) first = 0;
+            else {
+                first = low_value + (prime - rem);
+                if (first % 2 == 0) first += prime;  // skip even
+            }
         }
         for (i = first; i < size; i += prime){
-            if(i%2) marked[(i-low_value+1)/2] = 1;
+            if(i%2==1) marked[(i-low_value+1)/2] = 1;
         }
         if (!id) {
             while (marked[++index]);
