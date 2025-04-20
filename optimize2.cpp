@@ -82,7 +82,7 @@ int main(int argc, char* argv[])
 
     MPI_Bcast(&small_count, 1, MPI_LONG_LONG, 0, MPI_COMM_WORLD);
     MPI_Bcast(small_primes, small_count, MPI_LONG_LONG, 0, MPI_COMM_WORLD);
-
+    count=small_count;
 
     marked = (char*)malloc(size);
     if (marked == NULL) {
@@ -111,7 +111,6 @@ int main(int argc, char* argv[])
         }
     }
 
-    count = 0;
     for (i = 0; i < size; i++)
         if (!marked[i]) count++;
 
