@@ -20,6 +20,7 @@ void generate_small_primes(char *small_marked, LL sqrt_n, LL *small_primes, LL *
             small_primes[(*count)++] = i;
         }
     }
+    printf("%lld",small_primes[2]);
 }
 
 
@@ -71,13 +72,11 @@ int main(int argc, char* argv[])
     char *small_marked = NULL;
     LL small_count = 0;
     LL sqrt_n = (LL)sqrt((double)n);
+    small_primes = (LL*)malloc((sqrt_n + 1) * sizeof(LL));
     if (id == 0) {
         small_marked = (char*)malloc((sqrt_n + 1) * sizeof(char));
-        small_primes = (LL*)malloc((sqrt_n + 1) * sizeof(LL));
         generate_small_primes(small_marked, sqrt_n, small_primes, &small_count);
         free(small_marked);
-    } else {
-        small_primes = (LL*)malloc((sqrt_n + 1) * sizeof(LL));
     }
 
     MPI_Bcast(&small_count, 1, MPI_LONG_LONG, 0, MPI_COMM_WORLD);
@@ -118,7 +117,8 @@ int main(int argc, char* argv[])
     elapsed_time += MPI_Wtime();
 
     if (!id) {
-        printf("There are %lld primes less than or equal to %lld\n", global_count + 1+small_count, n);
+        printf("%lld",small_count);
+        printf("There are %lld primes less than or equal to %lld\n", global_count +small_count, n);
         printf("SIEVE (%d processes) took %10.6f seconds.\n", p, elapsed_time);
     }
 
