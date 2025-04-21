@@ -108,7 +108,7 @@ int main(int argc, char* argv[])
         
         // 初始化标记数组
         LL i = block_start;
-        for (; i + 15 < block_end; i += 16) {
+        for (; i + 7 < block_end; i += 8) {
             marked[i] = 0;
             marked[i + 1] = 0;
             marked[i + 2] = 0;
@@ -117,14 +117,6 @@ int main(int argc, char* argv[])
             marked[i + 5] = 0;
             marked[i + 6] = 0;
             marked[i + 7] = 0;
-            marked[i + 8] = 0;
-            marked[i + 9] = 0;
-            marked[i + 10] = 0;
-            marked[i + 11] = 0;
-            marked[i + 12] = 0;
-            marked[i + 13] = 0;
-            marked[i + 14] = 0;
-            marked[i + 15] = 0;
         }
         for (; i < block_end; i++) {
             marked[i] = 0;
