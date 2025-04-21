@@ -80,7 +80,7 @@ int main(int argc, char* argv[])
 
     MPI_Bcast(&small_count, 1, MPI_LONG_LONG, 0, MPI_COMM_WORLD);
     MPI_Bcast(small_primes, small_count, MPI_LONG_LONG, 0, MPI_COMM_WORLD);
-    count=0;
+    count=size;
 
     marked = (char*)malloc(size);
     if (marked == NULL) {
@@ -106,18 +106,19 @@ int main(int argc, char* argv[])
 
         for (i = first; i <= high_value; i += 2 * prime) {
             marked[(i - low_value) / 2] = 1;
+            count--;
         }
     }
 
-    for (i = 0; i < size; i++)
-        if (!marked[i]) count++;
+    //for (i = 0; i < size; i++)
+        //if (!marked[i]) count++;
 
     MPI_Reduce(&count, &global_count, 1, MPI_LONG_LONG, MPI_SUM, 0, MPI_COMM_WORLD);
     elapsed_time += MPI_Wtime();
 
     if (!id) {
         //printf("%lld",small_count);
-        printf("There are %lld primes less than or equal to %lld\n", global_count, n);
+        printf("There are %lld primes less than or equal to %lld\n", global_count+1, n);
         printf("SIEVE (%d processes) took %10.6f seconds.\n", p, elapsed_time);
     }
 
