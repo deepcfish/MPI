@@ -95,7 +95,7 @@ int main(int argc, char* argv[])
     for (LL block_start = 0; block_start < size; block_start += BLOCK_SIZE) {
         LL block_end = MIN(block_start + BLOCK_SIZE, size);
         for (int j = 1; j < small_count; j++) {
-           register LL prime = small_primes[j];
+           const LL prime = small_primes[j];
             LL start_index;
             LL value = low_value + block_start * 2;
             
