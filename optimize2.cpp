@@ -116,8 +116,8 @@ int main(int argc, char* argv[])
     elapsed_time += MPI_Wtime();
 
     if (!id) {
-        printf("%lld",small_count);
-        printf("There are %lld primes less than or equal to %lld\n", global_count +small_count, n);
+        //printf("%lld",small_count);
+        printf("There are %lld primes less than or equal to %lld\n", global_count, n);
         printf("SIEVE (%d processes) took %10.6f seconds.\n", p, elapsed_time);
     }
 
