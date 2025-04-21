@@ -86,14 +86,14 @@ int main(int argc, char* argv[])
     LL small_count = 0;
     LL sqrt_n = (LL)sqrt((double)n);
     small_primes = (LL*)malloc((sqrt_n + 1) * sizeof(LL));
-    if (id == 0) {
+    //if (id == 0) {
         small_marked = (char*)malloc((sqrt_n + 1) * sizeof(char));
         generate_small_primes(small_marked, sqrt_n, small_primes, &small_count);
         free(small_marked);
-    }
+    //}
 
-    MPI_Bcast(&small_count, 1, MPI_LONG_LONG, 0, MPI_COMM_WORLD);
-    MPI_Bcast(small_primes, small_count, MPI_LONG_LONG, 0, MPI_COMM_WORLD);
+    //MPI_Bcast(&small_count, 1, MPI_LONG_LONG, 0, MPI_COMM_WORLD);
+    //MPI_Bcast(small_primes, small_count, MPI_LONG_LONG, 0, MPI_COMM_WORLD);
     count=size;
 
     if (posix_memalign((void**)&marked, 64, size) != 0) {
