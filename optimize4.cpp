@@ -108,7 +108,7 @@ int main(int argc, char* argv[])
         
         // 初始化标记数组
         LL i = block_start;
-        for (; i + 7 < block_end; i += 8) {
+        for (; i + 15 < block_end; i += 16) {
             marked[i] = 0;
             marked[i + 1] = 0;
             marked[i + 2] = 0;
@@ -117,6 +117,14 @@ int main(int argc, char* argv[])
             marked[i + 5] = 0;
             marked[i + 6] = 0;
             marked[i + 7] = 0;
+            marked[i + 8] = 0;
+            marked[i + 9] = 0;
+            marked[i + 10] = 0;
+            marked[i + 11] = 0;
+            marked[i + 12] = 0;
+            marked[i + 13] = 0;
+            marked[i + 14] = 0;
+            marked[i + 15] = 0;
         }
         for (; i < block_end; i++) {
             marked[i] = 0;
@@ -136,15 +144,12 @@ int main(int argc, char* argv[])
                 if (first % 2 == 0) first += prime;
                 start_index = (first - low_value) / 2;
             }
-            LL step = 2 * prime;
-            LL k = start_index;
-            for (; k < block_end; k += step) {
+            for (LL k = start_index; k < block_end; k += prime) {
                 if (!marked[k]) {
                     marked[k] = 1;
-                    count-=2;
+                    count--;
                 }
             }
-            if(k-block_end>prime) count++;
         }
     }
     
