@@ -58,17 +58,10 @@ int main(int argc, char* argv[])
     if (low_value % 2 == 0) low_value++;
     if (high_value % 2 == 0) high_value--;
     size = (high_value - low_value) / 2 + 1;
-    count=size;
 
     proc0_size = (n - 1) / p;
     if ((2 + proc0_size) < (int)sqrt((double)n)) {
         if (!id) printf("Too many processes\n");
-        MPI_Finalize();
-        exit(1);
-    }
-    marked = (char*)malloc(size);
-    if (marked == NULL) {
-        printf("Cannot allocate enough memory\n");
         MPI_Finalize();
         exit(1);
     }
@@ -83,41 +76,48 @@ int main(int argc, char* argv[])
         small_marked = (char*)malloc((sqrt_n + 1) * sizeof(char));
         generate_small_primes(small_marked, sqrt_n, small_primes, &small_count);
         free(small_marked);
-    }else{
-        LL rem_ = low_value % 3;
-        LL first_ = (rem_ == 0) ? low_value : (low_value + 3 - rem_);
-        for(i=first_;i<=high_value;i+=6){
-            marked[(i - low_value) / 2] = 1;
-            count--;
-        }
     }
 
     MPI_Bcast(&small_count, 1, MPI_LONG_LONG, 0, MPI_COMM_WORLD);
     MPI_Bcast(small_primes, small_count, MPI_LONG_LONG, 0, MPI_COMM_WORLD);
+    count=size;
 
+    marked = (char*)malloc(size);
+    if (marked == NULL) {
+        printf("Cannot allocate enough memory\n");
+        MPI_Finalize();
+        exit(1);
+    }
 
     for (i = 0; i < size; i++) marked[i] = 0;
 
 
-    for (int j =2; j < small_count; j++) {
-        LL  prime = small_primes[j];
-
-        LL first;
-        if (prime * prime > low_value)
-            first = prime * prime;
-        else {
-            LL rem = low_value % prime;
-            first = (rem == 0) ? low_value : (low_value + prime - rem);
-        }
-        if (first % 2 == 0) first += prime;
-
-        for (i = first; i <= high_value; i += 2 * prime) {
-            if(!marked[(i - low_value) / 2] ){
-                marked[(i - low_value) / 2] = 1;
-                count--;
+    LL BLOCK_SIZE = 32768; // cache 
+    for (LL block_start = 0; block_start < size; block_start += BLOCK_SIZE) {
+        LL block_end = MIN(block_start + BLOCK_SIZE, size);
+        for (int j = 1; j < small_count; j++) {
+            LL prime = small_primes[j];
+            LL start_index;
+            LL value = low_value + block_start * 2;
+            
+            if (prime * prime > value)
+                start_index = (prime * prime - low_value) / 2;
+            else {
+                LL rem = (value) % prime;
+                LL first = (rem == 0) ? value : (value + prime - rem);
+                if (first % 2 == 0) first += prime;
+                start_index = (first - low_value) / 2;
+            }
+    
+            for (LL k = start_index; k < block_end; k += prime) {
+                if (!marked[k]) {
+                    marked[k] = 1;
+                    count--;
+                }
             }
         }
     }
+    
 
     //for (i = 0; i < size; i++)
         //if (!marked[i]) count++;
