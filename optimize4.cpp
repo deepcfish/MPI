@@ -7,7 +7,21 @@
 #define LL long long
 
 void generate_small_primes(char *small_marked, LL sqrt_n, LL *small_primes, LL *count) {
-    for (LL i = 0; i <= sqrt_n; ++i) small_marked[i] = 0;
+    LL i = 0;
+    for (; i + 7 <= sqrt_n; i += 8) {
+        small_marked[i] = 0;
+        small_marked[i + 1] = 0;
+        small_marked[i + 2] = 0;
+        small_marked[i + 3] = 0;
+        small_marked[i + 4] = 0;
+        small_marked[i + 5] = 0;
+        small_marked[i + 6] = 0;
+        small_marked[i + 7] = 0;
+    }
+    for (; i <= sqrt_n; i++) {
+        small_marked[i] = 0;
+    }
+    
     for (LL i = 2; i * i <= sqrt_n; ++i) {
         if (!small_marked[i]) {
             for (LL j = i * i; j <= sqrt_n; j += i)
