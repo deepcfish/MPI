@@ -2,7 +2,6 @@
 #include <math.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <cmath>
 
 #define MIN(a,b) ((a)<(b)?(a):(b))
 #define LL long long
@@ -21,18 +20,6 @@ void generate_small_primes(char *small_marked, LL sqrt_n, LL *small_primes, LL *
             small_primes[(*count)++] = i;
         }
     }
-}
-long long estimate_pi_upper_bound(long long n) {
-    if (n < 17) {
-        // 精确上限（保守一点）
-        static const int exact_table[18] = {
-            0, 0, 1, 2, 2, 3, 3, 4, 4, 4,
-            4, 5, 5, 6, 6, 6, 6, 7
-        };
-        return exact_table[n];
-    }
-    double ln_n = log((double)n);
-    return (long long)(n / (ln_n - 1.0)) + 1;  // +1 保证整数上取整
 }
 
 
@@ -84,8 +71,7 @@ int main(int argc, char* argv[])
     char *small_marked = NULL;
     LL small_count = 0;
     LL sqrt_n = (LL)sqrt((double)n);
-    LL estimate_=estimate_pi_upper_bound(sqrt_n)*2;
-    small_primes = (LL*)malloc(estimate_ * sizeof(LL));
+    small_primes = (LL*)malloc((sqrt_n + 1) * sizeof(LL));
     if (id == 0) {
         small_marked = (char*)malloc((sqrt_n + 1) * sizeof(char));
         generate_small_primes(small_marked, sqrt_n, small_primes, &small_count);
@@ -102,7 +88,21 @@ int main(int argc, char* argv[])
         exit(1);
     }
 
-    for (i = 0; i < size; i++) marked[i] = 0;
+    LL i = 0;
+    for (; i + 7 < size; i += 8) {
+        marked[i] = 0;
+        marked[i + 1] = 0;
+        marked[i + 2] = 0;
+        marked[i + 3] = 0;
+        marked[i + 4] = 0;
+        marked[i + 5] = 0;
+        marked[i + 6] = 0;
+        marked[i + 7] = 0;
+    }
+    for (; i < size; i++) {
+        marked[i] = 0;
+    }
+    
 
 
     LL BLOCK_SIZE = 524288; // cache 
