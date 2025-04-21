@@ -108,7 +108,7 @@ int main(int argc, char* argv[])
     if (id == 0) {
         //small_marked = (char*)malloc((sqrt_n + 1) * sizeof(char));
         generate_small_primes(marked, sqrt_n, small_primes, &small_count);
-        free(small_marked);
+        //free(small_marked);
     }
 
     MPI_Bcast(&small_count, 1, MPI_LONG_LONG, 0, MPI_COMM_WORLD);
