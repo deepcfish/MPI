@@ -20,7 +20,6 @@ void generate_small_primes(char *small_marked, LL sqrt_n, LL *small_primes, LL *
             small_primes[(*count)++] = i;
         }
     }
-    printf("%lld",small_primes[2]);
 }
 
 
@@ -93,7 +92,7 @@ int main(int argc, char* argv[])
     for (i = 0; i < size; i++) marked[i] = 0;
 
 
-    for (int j = 0; j < small_count; j++) {
+    for (int j =1; j < small_count; j++) {
         LL  prime = small_primes[j];
 
         LL first;
