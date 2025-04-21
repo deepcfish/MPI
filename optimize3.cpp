@@ -82,9 +82,8 @@ int main(int argc, char* argv[])
     MPI_Bcast(small_primes, small_count, MPI_LONG_LONG, 0, MPI_COMM_WORLD);
     count=size;
 
-    marked = (char*)malloc(size);
-    if (marked == NULL) {
-        printf("Cannot allocate enough memory\n");
+    if (posix_memalign((void**)&marked, 64, size) != 0) {
+        printf("Cannot allocate aligned memory\n");
         MPI_Finalize();
         exit(1);
     }
@@ -96,7 +95,7 @@ int main(int argc, char* argv[])
     for (LL block_start = 0; block_start < size; block_start += BLOCK_SIZE) {
         LL block_end = MIN(block_start + BLOCK_SIZE, size);
         for (int j = 1; j < small_count; j++) {
-            LL prime = small_primes[j];
+           register LL prime = small_primes[j];
             LL start_index;
             LL value = low_value + block_start * 2;
             
