@@ -88,7 +88,7 @@ int main(int argc, char* argv[])
         exit(1);
     }
 
-    LL i = 0;
+    i = 0;
     for (; i + 7 < size; i += 8) {
         marked[i] = 0;
         marked[i + 1] = 0;
