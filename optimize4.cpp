@@ -106,7 +106,7 @@ int main(int argc, char* argv[])
     LL sqrt_n = (LL)sqrt((double)n);
     small_primes = (LL*)malloc((sqrt_n + 1) * sizeof(LL));
     if (id == 0) {
-        small_marked = (char*)malloc((sqrt_n + 1) * sizeof(char));
+        //small_marked = (char*)malloc((sqrt_n + 1) * sizeof(char));
         generate_small_primes(marked, sqrt_n, small_primes, &small_count);
         free(small_marked);
     }
