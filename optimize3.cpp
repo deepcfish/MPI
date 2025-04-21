@@ -85,7 +85,7 @@ int main(int argc, char* argv[])
         free(small_marked);
     }else{
         LL rem_ = low_value % 3;
-        LL first_ = (rem_ == 0) ? low_value : (low_value + 3 - rem);
+        LL first_ = (rem_ == 0) ? low_value : (low_value + 3 - rem_);
         for(i=first_;i<=high_value;i+=6){
             marked[(i - low_value) / 2] = 1;
             count--;
