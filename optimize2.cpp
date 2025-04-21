@@ -105,8 +105,10 @@ int main(int argc, char* argv[])
         if (first % 2 == 0) first += prime;
 
         for (i = first; i <= high_value; i += 2 * prime) {
-            marked[(i - low_value) / 2] = 1;
-            count--;
+            if(!marked[(i - low_value) / 2] ){
+                marked[(i - low_value) / 2] = 1;
+                count--;
+            }
         }
     }
 
