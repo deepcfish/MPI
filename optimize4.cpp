@@ -7,20 +7,20 @@
 #define LL long long
 
 void generate_small_primes(char *small_marked, LL sqrt_n, LL *small_primes, LL *count) {
-    LL i = 0;
-    for (; i + 7 <= sqrt_n; i += 8) {
-        small_marked[i] = 0;
-        small_marked[i + 1] = 0;
-        small_marked[i + 2] = 0;
-        small_marked[i + 3] = 0;
-        small_marked[i + 4] = 0;
-        small_marked[i + 5] = 0;
-        small_marked[i + 6] = 0;
-        small_marked[i + 7] = 0;
-    }
-    for (; i <= sqrt_n; i++) {
-        small_marked[i] = 0;
-    }
+    //LL i = 0;
+    //for (; i + 7 <= sqrt_n; i += 8) {
+        //small_marked[i] = 0;
+        //small_marked[i + 1] = 0;
+        //small_marked[i + 2] = 0;
+        //small_marked[i + 3] = 0;
+        //small_marked[i + 4] = 0;
+        //small_marked[i + 5] = 0;
+        //small_marked[i + 6] = 0;
+        //small_marked[i + 7] = 0;
+    //}
+    //for (; i <= sqrt_n; i++) {
+        //small_marked[i] = 0;
+    //}
     
     for (LL i = 2; i * i <= sqrt_n; ++i) {
         if (!small_marked[i]) {
@@ -80,22 +80,6 @@ int main(int argc, char* argv[])
         exit(1);
     }
 
-
-    LL *small_primes = NULL;
-    char *small_marked = NULL;
-    LL small_count = 0;
-    LL sqrt_n = (LL)sqrt((double)n);
-    small_primes = (LL*)malloc((sqrt_n + 1) * sizeof(LL));
-    if (id == 0) {
-        small_marked = (char*)malloc((sqrt_n + 1) * sizeof(char));
-        generate_small_primes(small_marked, sqrt_n, small_primes, &small_count);
-        free(small_marked);
-    }
-
-    MPI_Bcast(&small_count, 1, MPI_LONG_LONG, 0, MPI_COMM_WORLD);
-    MPI_Bcast(small_primes, small_count, MPI_LONG_LONG, 0, MPI_COMM_WORLD);
-    count=size;
-
     if (posix_memalign((void**)&marked, 64, size) != 0) {
         printf("Cannot allocate aligned memory\n");
         MPI_Finalize();
@@ -116,6 +100,21 @@ int main(int argc, char* argv[])
     for (; i < size; i++) {
         marked[i] = 0;
     }
+
+    LL *small_primes = NULL;
+    LL small_count = 0;
+    LL sqrt_n = (LL)sqrt((double)n);
+    small_primes = (LL*)malloc((sqrt_n + 1) * sizeof(LL));
+    if (id == 0) {
+        small_marked = (char*)malloc((sqrt_n + 1) * sizeof(char));
+        generate_small_primes(marked, sqrt_n, small_primes, &small_count);
+        free(small_marked);
+    }
+
+    MPI_Bcast(&small_count, 1, MPI_LONG_LONG, 0, MPI_COMM_WORLD);
+    MPI_Bcast(small_primes, small_count, MPI_LONG_LONG, 0, MPI_COMM_WORLD);
+    count=size;
+
     
 
 
