@@ -99,7 +99,7 @@ int main(int argc, char* argv[])
     for (i = 0; i < size; i++) marked[i] = 0;
 
 
-    for (int j =1; j < small_count; j++) {
+    for (int j =2; j < small_count; j++) {
         LL  prime = small_primes[j];
 
         LL first;
