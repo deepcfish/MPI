@@ -84,7 +84,7 @@ int main(int argc, char* argv[])
     char *small_marked = NULL;
     LL small_count = 0;
     LL sqrt_n = (LL)sqrt((double)n);
-    LL estimate_=estimate_pi_upper_bound(sqrt_n);
+    LL estimate_=estimate_pi_upper_bound(sqrt_n)*2;
     small_primes = (LL*)malloc(estimate_ * sizeof(LL));
     if (id == 0) {
         small_marked = (char*)malloc((sqrt_n + 1) * sizeof(char));
