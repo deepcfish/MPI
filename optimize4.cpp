@@ -86,14 +86,14 @@ int main(int argc, char* argv[])
     LL small_count = 0;
     LL sqrt_n = (LL)sqrt((double)n);
     small_primes = (LL*)malloc((sqrt_n + 1) * sizeof(LL));
-    //if (id == 0) {
+    if (id == 0) {
         small_marked = (char*)malloc((sqrt_n + 1) * sizeof(char));
         generate_small_primes(small_marked, sqrt_n, small_primes, &small_count);
         free(small_marked);
-    //}
+    }
 
-    //MPI_Bcast(&small_count, 1, MPI_LONG_LONG, 0, MPI_COMM_WORLD);
-    //MPI_Bcast(small_primes, small_count, MPI_LONG_LONG, 0, MPI_COMM_WORLD);
+    MPI_Bcast(&small_count, 1, MPI_LONG_LONG, 0, MPI_COMM_WORLD);
+    MPI_Bcast(small_primes, small_count, MPI_LONG_LONG, 0, MPI_COMM_WORLD);
     count=size;
 
     if (posix_memalign((void**)&marked, 64, size) != 0) {
@@ -102,28 +102,29 @@ int main(int argc, char* argv[])
         exit(1);
     }
 
-    i = 0;
-    for (; i + 7 < size; i += 8) {
-        marked[i] = 0;
-        marked[i + 1] = 0;
-        marked[i + 2] = 0;
-        marked[i + 3] = 0;
-        marked[i + 4] = 0;
-        marked[i + 5] = 0;
-        marked[i + 6] = 0;
-        marked[i + 7] = 0;
-    }
-    for (; i < size; i++) {
-        marked[i] = 0;
-    }
-    
-
-
     LL BLOCK_SIZE = 524288; // cache 
     for (LL block_start = 0; block_start < size; block_start += BLOCK_SIZE) {
         LL block_end = MIN(block_start + BLOCK_SIZE, size);
+        
+        // 初始化标记数组
+        LL i = block_start;
+        for (; i + 7 < block_end; i += 8) {
+            marked[i] = 0;
+            marked[i + 1] = 0;
+            marked[i + 2] = 0;
+            marked[i + 3] = 0;
+            marked[i + 4] = 0;
+            marked[i + 5] = 0;
+            marked[i + 6] = 0;
+            marked[i + 7] = 0;
+        }
+        for (; i < block_end; i++) {
+            marked[i] = 0;
+        }
+        
+        // 执行素数筛选过程
         for (int j = 1; j < small_count; j++) {
-           const LL prime = small_primes[j];
+            const LL prime = small_primes[j];
             LL start_index;
             LL value = low_value + block_start * 2;
             
@@ -144,6 +145,7 @@ int main(int argc, char* argv[])
             }
         }
     }
+    
     
 
     //for (i = 0; i < size; i++)
