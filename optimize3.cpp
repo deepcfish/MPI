@@ -92,7 +92,7 @@ int main(int argc, char* argv[])
     for (i = 0; i < size; i++) marked[i] = 0;
 
 
-    LL BLOCK_SIZE = 32768; // cache 
+    LL BLOCK_SIZE = 65536; // cache 
     for (LL block_start = 0; block_start < size; block_start += BLOCK_SIZE) {
         LL block_end = MIN(block_start + BLOCK_SIZE, size);
         for (int j = 1; j < small_count; j++) {
