@@ -137,7 +137,7 @@ int main(int argc, char* argv[])
                 start_index = (first - low_value) / 2;
             }
             LL step = 2 * prime;
-            LL k = start_index
+            LL k = start_index;
             for (; k < block_end; k += step) {
                 if (!marked[k]) {
                     marked[k] = 1;
