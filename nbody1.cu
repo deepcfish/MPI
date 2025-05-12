@@ -142,6 +142,8 @@ int main(const int argc, const char** argv) {
 
 
     cudaDeviceSynchronize();
+    cudaMemcpy(p, d_p, bytes, cudaMemcpyDeviceToHost);
+
   /*******************************************************************/
   // Do not modify the code in this section.
     const double tElapsed = GetTimer() / 1000.0;
