@@ -105,7 +105,7 @@ int main(const int argc, const char** argv) {
   cudaMemcpy(d_p, p, bytes, cudaMemcpyHostToDevice);
   
   int block_size = 256;
-  int grid_size = (nBodies + block_size) / block_size;
+  int grid_size = (nBodies + block_size - 1) / block_size;
  
   double totalTime = 0.0;
  
